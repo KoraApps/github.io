@@ -67,13 +67,15 @@
       <header>
         <div class="brand">KoraApps</div>
         <h1>CalSnap Privacy Policy</h1>
-        <p class="updated">Effective date: August 15, 2026</p>
+        <p class="updated">Last revised: October 28, 2026</p>
       </header>
 
       <p>
         CalSnap helps people track meals and calorie estimates. This policy
-        explains how CalSnap handles local device data, optional account and
-        cloud-backup data, AI photo processing, and subscription information.
+        explains how CalSnap handles local device data, authentication and
+        security data, AI photo processing, and subscription information.
+        CalSnap Build 17 does not offer Cloud Backup, cloud synchronization,
+        or cloud restore of your local tracking data.
       </p>
 
       <h2>Local device data</h2>
@@ -83,69 +85,108 @@
         confirmed meal history, reusable foods, settings, reminder preferences,
         and weight entries. Local data is not sent to CalSnap merely because you
         use the app. You can delete the local device copy from CalSnap's data
-        controls or by removing the app.
+        controls or by removing the app. Deleting local data does not delete
+        historical cloud backups, authentication records, subscription records,
+        or server-side scan-count records.
       </p>
 
       <h2>Account data and AI photo processing</h2>
       <p>
-        CalSnap may create or restore an anonymous Firebase account in the
-        background to help protect the service and enforce AI scan limits. The
-        account identifier is not displayed in the app and is used only for
-        authentication, security, scan limits, and optional cloud backup. You
-        may later choose to link this account to a sign-in method when that
-        feature is available. If an anonymous account is not linked and the app
-        is uninstalled or the account is lost, cloud-only data may no longer be
-        accessible.
+        CalSnap uses Firebase Authentication and may create or restore an
+        anonymous account in the background to authenticate AI scan requests
+        and enforce scan limits. Restoring this authentication account does not
+        restore your meals, profile, or other local tracking data. The account
+        identifier is not displayed in the app. CalSnap also uses Firebase App
+        Check to help verify that requests come from the app and protect the
+        service from misuse. Authentication and security processing continue
+        even though Cloud Backup has been removed.
       </p>
       <p>
-        When you choose to scan a meal, CalSnap keeps the selected photo
-        temporarily on your device until you confirm the scan. After you
-        confirm, the photo is sent securely to our AI processing provider solely
-        to estimate visible foods, portions, and nutritional information. We do
-        not permanently store food photos, include them in application logs, or
-        add them to meal history or cloud backup. Food photos are processed only
-        for the requested scan.
+        When you choose a photo, it stays on your device until you confirm the
+        scan. After confirmation, CalSnap sends the selected image and its file
+        type through Google Cloud Functions for Firebase to OpenAI to estimate
+        visible foods, portions, and nutrition. The Firebase request also
+        includes authentication and App Check information. CalSnap does not
+        explicitly include your Firebase account identifier, profile, weight,
+        or meal history in the request to OpenAI.
+      </p>
+      <p>
+        CalSnap's backend does not save the photo to its database, include photo
+        content in application logs, or attach it to meal history. The app
+        attempts to delete its temporary photo file after scanning or
+        cancellation; this does not delete your original gallery photo and is
+        not a guarantee of cleanup after a crash or interruption. CalSnap
+        submits photos to obtain the requested estimate. OpenAI may retain
+        submitted content under its API data-retention and safety policies;
+        provider security and abuse-monitoring rules also apply. CalSnap does
+        not promise immediate provider deletion or zero retention.
       </p>
       <p>
         AI-generated estimates may be inaccurate and should always be reviewed
-        and edited before being saved. You can cancel the scan or choose manual
-        meal entry at any time. During development, CalSnap limits AI scans to
-        help prevent misuse and manage costs. CalSnap stores only the minimum
-        information required to enforce scan limits and maintain security, and
-        never the food photo itself.
+        and edited before being saved. You can cancel before submitting the
+        photo or choose manual meal entry instead. Once processing has started,
+        cancellation or a timeout does not establish that a provider has
+        deleted the submitted photo.
+      </p>
+      <p>
+        CalSnap uses scan limits to help prevent misuse and manage costs.
+        Cloud Firestore stores scan-count records associated with your Firebase
+        account identifier, including the date, count, and update timestamp.
+        These records do not contain the photo and are not backups of your
+        local tracking data. A new daily allowance does not itself delete older
+        scan-count records. Application logs record scan completion or failure
+        information and may include image byte counts and returned food counts,
+        without photo content. No fixed retention period for these records or
+        logs is promised here.
       </p>
 
-      <h2>Optional cloud backup data</h2>
+      <h2>Cloud Backup removal and previously stored data</h2>
       <p>
-        Cloud backup is optional and is off by default. When you choose to
-        enable it, CalSnap can securely back up your profile, confirmed meal
-        history, reusable foods, settings, and weight entries using your
-        Firebase account identifier. This information is stored in Europe in
-        Google Cloud Firestore. Food photos are not included in cloud backup.
+        Build 17 does not upload your profile, confirmed meal history, reusable
+        foods, settings, or weight entries for Cloud Backup or cloud
+        synchronization, and cannot restore that data from the cloud. Your
+        current tracking data remains on your device, separate from the online
+        processing described above.
       </p>
       <p>
-        You can turn off cloud backup at any time. Turning it off stops future
-        backup but does not remove the copy already stored in the cloud. You can
-        request deletion of your active cloud-backup data through CalSnap's
-        cloud-data controls or by contacting
+        Older versions may have stored cloud-backup data in Google Cloud
+        Firestore under a Firebase account identifier. Removing Cloud
+        Backup does not itself delete any previously stored data. Such data may
+        remain stored. Build 17 does not automatically delete those backups,
+        and no automatic 30-day deletion period is promised here.
+        Build 17 does not provide controls to manage or delete those older
+        backups.
+      </p>
+      <p>
+        For historical cloud-backup deletion requests, contact
         <a href="mailto:koraapps.support@gmail.com">koraapps.support@gmail.com</a>.
-      </p>
-      <p>
-        We delete active cloud-backup data as soon as reasonably possible after
-        a verified deletion request. Residual copies can remain in backup or
-        disaster-recovery systems for up to 30 days before permanent removal,
-        where applicable. Food photos are never included in cloud backup or
-        retained as meal-history data.
+        We need to verify that the request concerns your data and identify the
+        associated account before deleting records. Anonymous accounts may be
+        difficult to identify if access has been lost. Deleting a historical
+        backup does not itself delete your Firebase Authentication account or
+        cancel a subscription. Never send us passwords, authentication tokens,
+        or other sign-in secrets.
       </p>
 
       <h2>Subscription and payment information</h2>
       <p>
-        If you choose to purchase a subscription after subscriptions are
-        activated, Apple App Store or Google Play will process your payment.
-        CalSnap and KoraApps do not receive or store your full payment-card
-        details. RevenueCat may process purchase status and subscription
-        identifiers to determine Premium access. This information is used to
-        provide, restore, and manage subscription access.
+        Where subscriptions are available, Apple App Store or Google Play
+        processes payments. CalSnap and KoraApps do not receive or store your
+        full payment-card details. RevenueCat processes purchase history,
+        subscription status, and your Firebase account identifier to provide,
+        manage, and verify Premium access. CalSnap uses that identifier as the
+        RevenueCat app user ID. The app checks the configured active Premium
+        entitlement, and the scan service independently checks RevenueCat to
+        determine the applicable AI scan allowance. This check does not send
+        the food photo to RevenueCat.
+      </p>
+      <p>
+        Restore Purchases attempts to restore eligible subscriptions associated
+        with your store account, subject to store and RevenueCat restore rules.
+        It does not restore local food history, profile, settings, other local
+        tracking data, or historical cloud backups. Subscription availability
+        and restoration depend on the build, store, and service configuration;
+        successful restoration is not guaranteed.
       </p>
 
       <h2>Contact and changes</h2>
@@ -153,7 +194,7 @@
         For privacy questions or deletion requests, contact
         <a href="mailto:koraapps.support@gmail.com">koraapps.support@gmail.com</a>.
         We may update this policy as CalSnap changes; the latest version will
-        show its effective date.
+        show its revision date.
       </p>
       <p>
         Calorie estimates are informational and are not medical advice. People
